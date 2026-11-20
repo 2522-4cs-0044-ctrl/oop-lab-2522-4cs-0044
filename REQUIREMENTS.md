@@ -32,5 +32,38 @@ When invalid input is entered (such as a negative amount or empty ID), the syste
 
 The system shall prevent duplicate IDs and negative quantities/amounts from being committed to active records
 
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
+
+## Performance
+1.PF-1 (Response Time):
+Search and display operations on up to 1,000 records shall complete in under 1 second on a standard desktop machine
+
+
+2.PF-2 (Startup & Load Time):
+The application shall start and load existing records in under 2 seconds
+
+-----------------------------------------------------------------------------------------
+
+## Supportability
+1.SP-1 (Modular OOP Structure):
+Each entity and manager component shall be separated into well-defined classes/headers so individual modules can be updated without breaking unrelated features
+
+2.SP-2 (Readable Logging & Diagnostics):
+ File read/write errors and invalid operation attempts shall be reported with clear context messages to aid debugging
+
+------------------------------------------------------------------------------------------------
+
+## + (Additional Requirements)
+1.Design (+DS):
+The system shall follow Object-Oriented design principles including encapsulation, inheritance, polymorphism, and an abstract base class for shared behavior
+
+2.Implementation (+IM):
+The project shall be implemented in standard C++ using clean naming conventions, access specifiers, and destructors where needed.
+
+3.Interface (+IN):
+The application shall provide a text-based console menu interface (or well-defined CLI prompts/output) with clear labels and formatted summaries.
+
+4.Physical (+PH):
+The application shall run on standard Windows/Linux PC hardware with at least 4 GB RAM and store data locally on disk.
 
