@@ -1,87 +1,68 @@
 #include <iostream>
 #include <string>
 using namespace std;
-
-// Abstract class
 class Vehicle {
 protected:
-    string regNo;
+    string plateNumber;
 
 public:
-    Vehicle(string r) : regNo(r) {}
-
-    virtual double toll() = 0;
-    virtual string type() = 0;
-
-    void showInfo() {
-        cout << type() << " " << regNo << ": toll Rs. " << toll() << endl;
+    Vehicle(string plate) {
+        plateNumber = plate;
     }
-
-    virtual ~Vehicle() {}
+double toll() {
+        return 0.0;
+    }
+void showInfo() {
+        cout << "Plate: " << plateNumber << endl;
+    }
 };
-
 class Car : public Vehicle {
 public:
-    Car(string r) : Vehicle(r) {}
-
-    double toll() override {
-        return 150;
+    Car(string plate) : Vehicle(plate) {}
+    double toll() {
+        return 100.0;
     }
-
-    string type() override {
-        return "Car";
+void showInfo() {
+        cout << "Car | Plate: " << plateNumber << " | Toll: Rs. " << toll() << endl;
     }
 };
-
 class Bus : public Vehicle {
 public:
-    Bus(string r) : Vehicle(r) {}
+    Bus(string plate) : Vehicle(plate) {}
 
-    double toll() override {
-        return 300;
+    double toll() {
+        return 250.0;
     }
-
-    string type() override {
-        return "Bus";
+void showInfo() {
+        cout << "Bus | Plate: " << plateNumber << " | Toll: Rs. " << toll() << endl;
     }
 };
-
 class Truck : public Vehicle {
 private:
     int axles;
 
 public:
-    Truck(string r, int a) : Vehicle(r), axles(a) {}
-
-    double toll() override {
-        return 200 + (100 * axles);
+    Truck(string plate, int ax) : Vehicle(plate) {
+        axles = (ax < 1) ? 1 : ax;
     }
-
-    string type() override {
-        return "Truck";
+double toll() {
+        return 300.0 + (axles - 1) * 100.0;
+    }
+void showInfo() {
+        cout << "Truck | Plate: " << plateNumber << " | Axles: " << axles << " | Toll: Rs. " << toll() << endl;
     }
 };
-
 int main() {
-    // Vehicle v("ABC-1"); // Error: cannot declare variable 'v' to be of abstract type 'Vehicle'
-
-    Vehicle* lane[4];
-    lane[0] = new Car("LEA-1234");
-    lane[1] = new Bus("KHI-555");
-    lane[2] = new Truck("ISB-909", 3);
-    lane[3] = new Car("RWP-77");
-
-    double totalToll = 0;
-    for (int i = 0; i < 4; i++) {
-        lane[i]->showInfo();
-        totalToll += lane[i]->toll();
-    }
-
-    cout << "Total collected: Rs. " << totalToll << endl;
-
-    for (int i = 0; i < 4; i++) {
-        delete lane[i];
-    }
-
+    Car c1("LEA-1234");
+    Bus b1("KHI-555");
+    Truck t1("ISB-909", 3);
+    Car c2("RWP-77");
+    c1.showInfo();
+    b1.showInfo();
+    t1.showInfo();
+    c2.showInfo();
+    double totalToll = c1.toll() + b1.toll() + t1.toll() + c2.toll();
+    cout << "-------------------------" << endl;
+    cout << "Total Toll Collected: Rs. " << totalToll << endl;
     return 0;
 }
