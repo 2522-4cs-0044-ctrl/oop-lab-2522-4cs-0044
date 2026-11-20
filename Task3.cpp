@@ -1,97 +1,59 @@
 #include <iostream>
-#include <string>
-#include <vector>
-#include <iomanip>
 using namespace std;
-class CartItem {
-private:
-    string name;
-    double price;
-    int quantity;
+class Assessment {
 public:
-    CartItem(string n, double p, int q) : name(n), price(p), quantity(q) {
-        if (price < 0) price = 0;
-        if (quantity < 1) quantity = 1;
+    virtual void calculateMarks() = 0;
+};
+class Quiz : public Assessment {
+private:
+    int marks;
+public:
+    Quiz(int m) {
+        marks = m;
     }
-    string getName() const { return name; }
-    double getPrice() const { return price; }
-    int getQuantity() const { return quantity; }
-    void setQuantity(int q) {
-        if (q >= 0) quantity = q;
+void calculateMarks() {
+        cout << "Quiz Marks: " << marks << endl;
     }
-    double getSubtotal() const {
-        return price * quantity;
-    }
-    void display() const {
-cout << left << setw(20) << name << " | Price: Rs. " << setw(8) << fixed << setprecision(2) << price<< " | Qty: " << setw(3) << quantity< " | Subtotal: Rs. " << getSubtotal() << endl;
+int getMarks() {
+        return marks;
     }
 };
-class ShoppingCart {
+class Assignment : public Assessment {
 private:
-    vector<CartItem> items;
-    double discountPercent;
+    int marks;
 public:
-    ShoppingCart() : discountPercent(0.0) {}
-    void addItem(string name, double price, int quantity) {
-        for (auto& item : items) {
-            if (item.getName() == name) {
-                item.setQuantity(item.getQuantity() + quantity);
-                cout << "Updated quantity for '" << name << "'." << endl;
-                return;
-            }
-        }
-        items.push_back(CartItem(name, price, quantity));
-        cout << "Added '" << name << "' to cart." << endl;
+    Assignment(int m) {
+        marks = m;
     }
-void removeItem(string name) {
-        for (size_t i = 0; i < items.size(); i++) {
-            if (items[i].getName() == name) {
-                items.erase(items.begin() + i);
-                cout << "Removed '" << name << "' from cart." << endl;
-                return;
-            }
-        }
-        cout << "Item '" << name << "' not found in cart." << endl;
-}
-void applyDiscount(double percent) {
-        if (percent >= 0 && percent <= 100) {
-            discountPercent = percent;
-            cout << "Applied " << discountPercent << "% discount." << endl;
-        } else {
-            cout << "Invalid discount percentage!" << endl;
-        }
+void calculateMarks() {
+        cout << "Assignment Marks: " << marks << endl;
     }
-double getTotal() const {
-        double sum = 0.0;
-        for (const auto& item : items) {
-            sum += item.getSubtotal();
-        }
-        double discountAmount = (sum * discountPercent) / 100.0;
-        return sum - discountAmount;
+int getMarks() {
+        return marks;
     }
-void showCart() const {
-        cout << "\n--- Shopping Cart ---" << endl;
-        if (items.empty()) {
-            cout << "Cart is empty." << endl;
-        } else {
-            for (const auto& item : items) {
-                item.display();
-            }
-            cout << "---------------------" << endl;
-            cout << "Discount: " << discountPercent << "%" << endl;
-            cout << "Final Total: Rs. " << fixed << setprecision(2) << getTotal() << endl;
-        }
-        cout << "---------------------\n" << endl;
+};
+class Marks {
+private:
+    int value;
+public:
+    Marks(int v = 0) {
+        value = v;
+    }
+    Marks operator+(Marks other) {
+        return Marks(value + other.value);
+    }
+    int getValue() {
+        return value;
     }
 };
 int main() {
-    ShoppingCart cart;
-    cart.addItem("USB Cable", 450.0, 2);
-    cart.addItem("Wireless Mouse", 1850.0, 1);
-    cart.addItem("USB Cable", 450.0, 1); // Merges quantity -> 3
-    cart.applyDiscount(10.0);
-    cart.showCart();
-    cart.removeItem("USB Cable");
-    cart.showCart();
+    Quiz q(15);
+    Assignment a(25);
+    q.calculateMarks();
+    a.calculateMarks();
+    Marks m1(q.getMarks());
+    Marks m2(a.getMarks());
+    Marks total = m1 + m2;
+    cout << "Total Assessment Marks: " << total.getValue() << endl;
     return 0;
 }
